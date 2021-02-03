@@ -1,0 +1,22 @@
+modLoader="javafml"
+loaderVersion="[30,)"
+license="MIT"
+issueTrackerURL="https://github.com/CorgiTaco/Minecraft-CameraOverhaul/issues"
+[[mods]]
+modId="cameraoverhaul"
+version="1.0.0"
+displayName="Camera Overhaul"
+logoFile="icon.png"
+credits="altrisi"
+authors="Mirsario, Forge Port: CorgiTaco"
+description='''
+Makes gameplay more satisfying through the use of various camera tilting. Compatible with everything.
+Configurable through the '.minecraft/config/cameraoverhaul.json' file for finer control.
+'''
+
+[[dependencies.cameraoverhaul]]
+modId="forge"
+mandatory=true
+versionRange="[30.0.0,)"
+ordering="NONE"
+side="CLIENT"

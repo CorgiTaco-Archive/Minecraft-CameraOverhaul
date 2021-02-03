@@ -1,0 +1,17 @@
+{
+	"required": true,
+	"package": "mirsario.cameraoverhaul.mixins",
+	"compatibilityLevel": "JAVA_8",
+	"refmap": "cameraoverhaul.refmap.json",
+	"mixins": [
+
+	],
+	"client": [
+		"modern.CameraMixin",
+		"modern.GameRendererMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"minVersion": "0.8"
+}
