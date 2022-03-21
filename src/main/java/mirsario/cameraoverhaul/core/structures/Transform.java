@@ -1,17 +1,16 @@
 package mirsario.cameraoverhaul.core.structures;
 
-import net.minecraft.util.math.vector.Vector3d;
-
+import net.minecraft.world.phys.Vec3;
 public class Transform {
-    public Vector3d position;
-    public Vector3d eulerRot;
+    public Vec3 position;
+    public Vec3 eulerRot;
 
     public Transform() {
-        this.position = new Vector3d(0d, 0d, 0d);
-        this.eulerRot = new Vector3d(0d, 0d, 0d);
+        this.position = new Vec3(0d, 0d, 0d);
+        this.eulerRot = new Vec3(0d, 0d, 0d);
     }
 
-    public Transform(Vector3d position, Vector3d eulerRot) {
+    public Transform(Vec3 position, Vec3 eulerRot) {
         this.position = position;
         this.eulerRot = eulerRot;
     }

@@ -1,40 +1,32 @@
 package mirsario.cameraoverhaul.mixins.modern;
 
-import mirsario.cameraoverhaul.core.callbacks.CameraUpdateCallback;
-import mirsario.cameraoverhaul.core.callbacks.ModifyCameraTransformCallback;
-import mirsario.cameraoverhaul.core.structures.Transform;
-import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IBlockReader;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import net.minecraft.client.Camera;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.BlockGetter;
 
-@Mixin(ActiveRenderInfo.class)
+import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.*;
+
+import mirsario.cameraoverhaul.core.callbacks.*;
+import mirsario.cameraoverhaul.core.structures.*;
+
+@Mixin(Camera.class)
 public abstract class CameraMixin {
-    @Shadow
-    abstract float getYaw();
-
-    @Shadow
-    abstract float getPitch();
-
-    @Shadow
-    protected abstract void setDirection(float pitchIn, float yawIn);
-
-    @Shadow
-    public abstract Vector3d getProjectedView();
+	@Shadow abstract float getXRot();
+	@Shadow abstract float getYRot();
+	@Shadow abstract Vec3 getPosition();
+	@Shadow abstract void setRotation(float yaw, float pitch);
 
     @Inject(method = "update", at = @At("RETURN"))
-    private void OnCameraUpdate(IBlockReader area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
-        Transform cameraTransform = new Transform(getProjectedView(), new Vector3d(getPitch(), getYaw(), 0d));
+    private void OnCameraUpdate(BlockGetter area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
+        Transform cameraTransform = new Transform(getPosition(), new Vec3(getXRot(), getYRot(), 0d));
 
-        CameraUpdateCallback.EVENT.Invoker().OnCameraUpdate((ActiveRenderInfo) (Object) this, cameraTransform, tickDelta);
+        CameraUpdateCallback.EVENT.Invoker().OnCameraUpdate((Camera) (Object) this, cameraTransform, tickDelta);
 
-        cameraTransform = ModifyCameraTransformCallback.EVENT.Invoker().ModifyCameraTransform((ActiveRenderInfo) (Object) this, cameraTransform);
+        cameraTransform = ModifyCameraTransformCallback.EVENT.Invoker().ModifyCameraTransform((Camera) (Object) this, cameraTransform);
 
-        setDirection((float) cameraTransform.eulerRot.y, (float) cameraTransform.eulerRot.x);
+        setRotation((float) cameraTransform.eulerRot.y, (float) cameraTransform.eulerRot.x);
     }
 }
