@@ -19,7 +19,7 @@ public abstract class CameraMixin {
 	@Shadow abstract Vec3 getPosition();
 	@Shadow abstract void setRotation(float yaw, float pitch);
 
-    @Inject(method = "update", at = @At("RETURN"))
+    @Inject(method = "setup", at = @At("RETURN"))
     private void OnCameraUpdate(BlockGetter area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
         Transform cameraTransform = new Transform(getPosition(), new Vec3(getXRot(), getYRot(), 0d));
 

@@ -20,18 +20,18 @@ public abstract class GameRendererMixin {
 
 	@Shadow
 	@Final
-	private Camera camera;
+	private Camera mainCamera;
 
-	@Inject(method = "renderWorld", at = @At(
+	@Inject(method = "renderLevel", at = @At(
 		value = "INVOKE",
-		//Inject before the call to Camera.update()
-		target = "Lnet/minecraft/client/Camera;update(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/world/entity/Entity;ZZF)V",
+		//Inject before the call to Camera.setup()
+		target = "Lnet/minecraft/client/Camera;setup(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/world/entity/Entity;ZZF)V",
 		shift = At.Shift.BEFORE
 	))
 	private void PostCameraUpdate(float tickDelta, long limitTime, PoseStack matrix, CallbackInfo ci) {
-		Transform cameraTransform = new Transform(camera.getPosition(), new Vec3(camera.getXRot(), camera.getYRot(), 0d));
+		Transform cameraTransform = new Transform(mainCamera.getPosition(), new Vec3(mainCamera.getXRot(), mainCamera.getYRot(), 0d));
 
-		cameraTransform = ModifyCameraTransformCallback.EVENT.Invoker().ModifyCameraTransform(camera, cameraTransform);
+		cameraTransform = ModifyCameraTransformCallback.EVENT.Invoker().ModifyCameraTransform(mainCamera, cameraTransform);
 
 		matrix.mulPose(Vector3f.ZP.rotationDegrees((float)cameraTransform.eulerRot.z));
 	}
