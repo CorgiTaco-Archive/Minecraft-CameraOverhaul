@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url = 'https://maven.minecraftforge.net' }
         jcenter()
         mavenCentral()
         maven {url='https://dist.creeper.host/Sponge/maven'}
@@ -20,7 +20,7 @@ version = "${mod_version}-${mc_version}"
 group = "misrario.cameraoverhaul.${modid}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "${modid}"
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(16)
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
     // The mappings can be changed at any time, and must be in the following format.
@@ -71,12 +71,16 @@ minecraft {
 }
 
 repositories{
-	maven {
-		url = "https://maven.terraformersmc.com/releases"
-	}
-	maven {
-		url "https://maven.shedaniel.me/"
-	}
+    maven {
+        // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.k-4u.nl"
+    }
     jcenter()
     mavenCentral()
 
