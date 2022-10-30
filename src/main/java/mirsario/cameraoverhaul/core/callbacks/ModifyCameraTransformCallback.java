@@ -3,7 +3,7 @@ package mirsario.cameraoverhaul.core.callbacks;
 import mirsario.cameraoverhaul.core.events.Event;
 import mirsario.cameraoverhaul.core.events.EventHelper;
 import mirsario.cameraoverhaul.core.structures.Transform;
-import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.client.Camera;
 
 public interface ModifyCameraTransformCallback {
     Event<ModifyCameraTransformCallback> EVENT = EventHelper.CreateEvent(ModifyCameraTransformCallback.class,
@@ -16,5 +16,5 @@ public interface ModifyCameraTransformCallback {
             }
     );
 
-    Transform ModifyCameraTransform(ActiveRenderInfo camera, Transform transform);
+    Transform ModifyCameraTransform(Camera camera, Transform transform);
 }

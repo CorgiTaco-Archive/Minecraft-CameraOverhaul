@@ -7,9 +7,9 @@ import mirsario.cameraoverhaul.core.callbacks.ModifyCameraTransformCallback;
 import mirsario.cameraoverhaul.core.structures.Transform;
 import mirsario.cameraoverhaul.core.utils.MathUtils;
 import mirsario.cameraoverhaul.core.utils.Vec2fUtils;
-import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.util.math.vector.Vector2f;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.client.Camera;
+import net.minecraft.world.phys.Vec2;
+import net.minecraft.world.phys.Vec3;
 
 public final class CameraSystem implements CameraUpdateCallback, ModifyCameraTransformCallback {
 	private static double prevForwardVelocityPitchOffset;
@@ -30,10 +30,10 @@ public final class CameraSystem implements CameraUpdateCallback, ModifyCameraTra
 	}
 
 	@Override
-	public void OnCameraUpdate(ActiveRenderInfo camera, Transform cameraTransform, float deltaTime) {
+	public void OnCameraUpdate(Camera camera, Transform cameraTransform, float deltaTime) {
 		//Reset the offset transform
-		offsetTransform.position = new Vector3d(0d, 0d, 0d);
-		offsetTransform.eulerRot = new Vector3d(0d, 0d, 0d);
+		offsetTransform.position = new Vec3(0d, 0d, 0d);
+		offsetTransform.eulerRot = new Vec3(0d, 0d, 0d);
 
 		ConfigData config = CameraOverhaul.instance.config;
 
@@ -41,8 +41,8 @@ public final class CameraSystem implements CameraUpdateCallback, ModifyCameraTra
 			return;
 		}
 
-		Vector3d velocity = camera.getRenderViewEntity().getMotion();
-		Vector2f relativeXZVelocity = Vec2fUtils.Rotate(new Vector2f((float) velocity.x, (float) velocity.z), 360f - (float) cameraTransform.eulerRot.y);
+		Vec3 velocity = camera.getEntity().getDeltaMovement();
+		Vec2 relativeXZVelocity = Vec2fUtils.Rotate(new Vec2((float) velocity.x, (float) velocity.z), 360f - (float) cameraTransform.eulerRot.y);
 
 		//X
 		VerticalVelocityPitchOffset(cameraTransform, offsetTransform, velocity, relativeXZVelocity, deltaTime, config.verticalVelocityPitchFactor);
@@ -55,14 +55,14 @@ public final class CameraSystem implements CameraUpdateCallback, ModifyCameraTra
 	}
 
 	@Override
-	public Transform ModifyCameraTransform(ActiveRenderInfo camera, Transform transform) {
+	public Transform ModifyCameraTransform(Camera camera, Transform transform) {
 		return new Transform(
 				transform.position.add(offsetTransform.position),
 				transform.eulerRot.add(offsetTransform.eulerRot)
 		);
 	}
 
-	private void VerticalVelocityPitchOffset(Transform inputTransform, Transform outputTransform, Vector3d velocity, Vector2f relativeXZVelocity, double deltaTime, float intensity) {
+	private void VerticalVelocityPitchOffset(Transform inputTransform, Transform outputTransform, Vec3 velocity, Vec2 relativeXZVelocity, double deltaTime, float intensity) {
 		double verticalVelocityPitchOffset = velocity.y * 2.75d;
 
 		if (velocity.y < 0f) {
@@ -74,7 +74,7 @@ public final class CameraSystem implements CameraUpdateCallback, ModifyCameraTra
 		outputTransform.eulerRot = outputTransform.eulerRot.add(verticalVelocityPitchOffset * intensity, 0d, 0d);
 	}
 
-	private void ForwardVelocityPitchOffset(Transform inputTransform, Transform outputTransform, Vector3d velocity, Vector2f relativeXZVelocity, double deltaTime, float intensity) {
+	private void ForwardVelocityPitchOffset(Transform inputTransform, Transform outputTransform, Vec3 velocity, Vec2 relativeXZVelocity, double deltaTime, float intensity) {
 		double forwardVelocityPitchOffset = relativeXZVelocity.y * 5d;
 
 		prevForwardVelocityPitchOffset = forwardVelocityPitchOffset = MathUtils.Lerp(prevForwardVelocityPitchOffset, forwardVelocityPitchOffset, deltaTime * lerpSpeed);
@@ -82,7 +82,7 @@ public final class CameraSystem implements CameraUpdateCallback, ModifyCameraTra
 		outputTransform.eulerRot = outputTransform.eulerRot.add(forwardVelocityPitchOffset * intensity, 0d, 0d);
 	}
 
-	private void YawDeltaRollOffset(Transform inputTransform, Transform outputTransform, Vector3d velocity, Vector2f relativeXZVelocity, double deltaTime, float intensity) {
+	private void YawDeltaRollOffset(Transform inputTransform, Transform outputTransform, Vec3 velocity, Vec2 relativeXZVelocity, double deltaTime, float intensity) {
 		double yawDelta = prevCameraYaw - inputTransform.eulerRot.y;
 
 		if (yawDelta > 180) {
@@ -99,7 +99,7 @@ public final class CameraSystem implements CameraUpdateCallback, ModifyCameraTra
 		yawDeltaRollTargetOffset = MathUtils.Lerp(yawDeltaRollTargetOffset, 0d, deltaTime * 0.35d);
 	}
 
-	private void StrafingRollOffset(Transform inputTransform, Transform outputTransform, Vector3d velocity, Vector2f relativeXZVelocity, double deltaTime, float intensity) {
+	private void StrafingRollOffset(Transform inputTransform, Transform outputTransform, Vec3 velocity, Vec2 relativeXZVelocity, double deltaTime, float intensity) {
 		double strafingRollOffset = -relativeXZVelocity.x * 15d;
 
 		prevStrafingRollOffset = strafingRollOffset = MathUtils.Lerp(prevStrafingRollOffset, strafingRollOffset, deltaTime * lerpSpeed);
