@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[30,)"
+loaderVersion="[44,)"
 license="MIT"
 issueTrackerURL="https://github.com/CorgiTaco/Minecraft-CameraOverhaul/issues"
 [[mods]]
@@ -17,6 +17,13 @@ Configurable through the '.minecraft/config/cameraoverhaul.json' file for finer 
 [[dependencies.cameraoverhaul]]
 modId="forge"
 mandatory=true
-versionRange="[30.0.0,)"
+versionRange="[44,45.3]"
+ordering="NONE"
+side="CLIENT"
+
+[[dependencies.cameraoverhaul]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.19.3,1.19.4]"
 ordering="NONE"
 side="CLIENT"
