@@ -1,18 +1,18 @@
 package mirsario.cameraoverhaul.mixins.modern;
 
-import net.minecraft.client.Camera;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.client.renderer.GameRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+import mirsario.cameraoverhaul.core.callbacks.ModifyCameraTransformCallback;
+import mirsario.cameraoverhaul.core.structures.Transform;
+import net.minecraft.client.Camera;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.phys.Vec3;
-import com.mojang.math.Vector3f;
-
-
-import org.spongepowered.asm.mixin.*;
-import org.spongepowered.asm.mixin.injection.*;
-import org.spongepowered.asm.mixin.injection.callback.*;
-import mirsario.cameraoverhaul.core.callbacks.*;
-import mirsario.cameraoverhaul.core.structures.*;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin {
@@ -33,6 +33,6 @@ public abstract class GameRendererMixin {
 
 		cameraTransform = ModifyCameraTransformCallback.EVENT.Invoker().ModifyCameraTransform(mainCamera, cameraTransform);
 
-		matrix.mulPose(Vector3f.ZP.rotationDegrees((float)cameraTransform.eulerRot.z));
+		matrix.mulPose(Axis.ZP.rotationDegrees((float)cameraTransform.eulerRot.z));
 	}
 }

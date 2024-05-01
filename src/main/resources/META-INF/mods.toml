@@ -8,7 +8,7 @@ version="1.0.0"
 displayName="Camera Overhaul"
 logoFile="icon.png"
 credits="altrisi"
-authors="Mirsario, Forge Port: CorgiTaco"
+authors="Mirsario, Forge Port: CorgiTaco, ConfusingFool93 (AvacadoWizard120)"
 description='''
 Makes gameplay more satisfying through the use of various camera tilting. Compatible with everything.
 Configurable through the '.minecraft/config/cameraoverhaul.json' file for finer control.
