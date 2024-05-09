@@ -1,5 +1,6 @@
 package mirsario.cameraoverhaul.common.systems;
 
+import mirsario.cameraoverhaul.CameraOverhaulEntryPoint;
 import mirsario.cameraoverhaul.common.CameraOverhaul;
 import mirsario.cameraoverhaul.common.configuration.ConfigData;
 import mirsario.cameraoverhaul.core.callbacks.CameraUpdateCallback;
@@ -115,10 +116,13 @@ public final class CameraSystem implements CameraUpdateCallback, ModifyCameraTra
 	}
 
 	private void StrafingRollOffset(Transform inputTransform, Transform outputTransform, Vec3 velocity, Vec2 relativeXZVelocity, double deltaTime, float intensity, float smoothing) {
-		double strafingRollOffset = -relativeXZVelocity.x * 15d;
+		if (!CameraOverhaulEntryPoint.isBarrelRollLoaded)
+		{
+			double strafingRollOffset = -relativeXZVelocity.x * 15d;
 
-		prevStrafingRollOffset = strafingRollOffset = MathUtils.Damp(prevStrafingRollOffset, strafingRollOffset, smoothing, deltaTime);
+			prevStrafingRollOffset = strafingRollOffset = MathUtils.Damp(prevStrafingRollOffset, strafingRollOffset, smoothing, deltaTime);
 
-		outputTransform.eulerRot = outputTransform.eulerRot.add(0d, 0d, strafingRollOffset * intensity);
+			outputTransform.eulerRot = outputTransform.eulerRot.add(0d, 0d, strafingRollOffset * intensity);
+		}
 	}
 }
