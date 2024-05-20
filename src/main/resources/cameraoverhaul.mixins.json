@@ -7,8 +7,8 @@
 
 	],
 	"client": [
-		"modern.CameraMixin",
-		"modern.GameRendererMixin"
+      "CameraMixin",
+		"GameRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

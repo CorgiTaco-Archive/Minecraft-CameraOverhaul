@@ -1,4 +1,4 @@
-package mirsario.cameraoverhaul.mixins.modern;
+package mirsario.cameraoverhaul.mixins;
 
 import net.minecraft.client.Camera;
 import net.minecraft.world.entity.Entity;
